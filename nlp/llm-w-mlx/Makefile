@@ -28,3 +28,19 @@ check:
 .PHONY: unit-tests
 unit-tests:
 	poetry run pytest tests/unit
+
+.PHONY: clean-build
+clean-build:
+	@rm -fr pip-wheel-metadata
+	@rm -fr build/
+	@rm -fr dist/
+	@rm -fr .eggs/
+	@find . -name '*.egg-info' -exec rm -fr {} +
+	@find . -name '*.egg' -exec rm -f {} +
+
+.PHONY: build
+build: clean-build
+	poetry build -f wheel
+	poetry export -f requirements.txt --output dist/constraints.txt --without-hashes
+	# removes extras from constraints.txt, requirements can possibly have them
+	sed -i'' -e 's/\[.*\]//g' dist/constraints.txt
