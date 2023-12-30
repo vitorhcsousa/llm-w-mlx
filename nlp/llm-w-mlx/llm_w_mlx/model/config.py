@@ -8,7 +8,7 @@ CONFIG = {
         "n_kv_heads": 8,
         # "rope_theta": 1000000.0,
         "norm_eps": 1e-05,
-        "vocab_size": 32000
+        "vocab_size": 32000,
     },
     "Mistral-7B-Instruct-v0.2": {
         "dim": 4096,
@@ -19,7 +19,7 @@ CONFIG = {
         "n_kv_heads": 8,
         # "rope_theta": 1000000.0,
         "norm_eps": 1e-05,
-        "vocab_size": 32000
+        "vocab_size": 32000,
     },
     "llama-2-7b-chat": {
         "dim": 4096,
@@ -29,8 +29,8 @@ CONFIG = {
         "n_heads": 32,
         "n_kv_heads": 32,
         "norm_eps": 1e-05,
-        # "sliding_window": 4096,
-        "vocab_size": 32000
+        # "sliding_window": 4096,
+        "vocab_size": 32000,
     },
     "OpenHermes-2.5-Mistral-7B": {
         "dim": 4096,
@@ -41,6 +41,6 @@ CONFIG = {
         "n_kv_heads": 8,
         # "rope_theta": 1000000.0,
         "norm_eps": 1e-05,
-        "vocab_size": 32002
+        "vocab_size": 32002,
     },
 }
