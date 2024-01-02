@@ -21,7 +21,7 @@ repos:
     hooks:
       - id: system
         name: check
-        entry: make check
+        entry: make -C nlp/llm-w-mlx check
         pass_filenames: false
         language: system
         stages: [push]
