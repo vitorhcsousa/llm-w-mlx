@@ -1,7 +1,7 @@
 import contextlib
 import datetime
 import time
-from typing import Callable, Optional
+from typing import Any, Callable, Optional, Tuple
 
 STRFTIME_FORMAT = "%Y-%m-%d-%H-%M-%S"
 
@@ -34,7 +34,7 @@ class Timing(contextlib.ContextDecorator):
         """Start timing."""
         self.st = time.perf_counter_ns()
 
-    def __exit__(self, *exc) -> None:
+    def __exit__(self, *exc: Tuple[Any]) -> None:
         """End timing and print elapsed time."""
         self.et = time.perf_counter_ns() - self.st
         if self.enabled:

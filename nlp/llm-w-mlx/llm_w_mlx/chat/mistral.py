@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from .base import Chat
 
@@ -12,7 +12,7 @@ class MistralChat(Chat):
         end_str (str, optional): end of the model answer. Defaults to "</s>".
     """
 
-    def __init__(self, personality: str, examples: List[Dict[str, str]], end_str: str = "</s>"):
+    def __init__(self, personality: str, examples: List[Dict[str, Optional[str]]], end_str: str = "</s>"):
         super().__init__(personality, examples, end_str)
         """
         [INST] {{ system_prompt }} + {{ user_prompt }} [/INST] {{ model_prompt }}</s>[INST] {{ user_prompt }} [/INST
@@ -33,7 +33,7 @@ class MistralChat(Chat):
         """
         prompt = ""
         for example in self.examples:
-            prompt += example["user"] + " " + self.INST_END
+            prompt += example["user"] + " " + self.INST_END  # type: ignore
             if example["model"] is not None:
                 prompt += " " + example["model"] + self.END + self.INST_START + " "
         return prompt

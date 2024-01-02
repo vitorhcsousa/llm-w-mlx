@@ -12,10 +12,34 @@ class RMSNorm(nn.Module):
         self.weight = mx.ones((dims,))
         self.eps = eps
 
-    def _norm(self, x):
+    def _norm(self, x: mx.array) -> mx.array:
+        """
+        Normalizes the input tensor using Root Mean Square (RMS) normalization.
+
+        Parameters:
+        x (mx.array): The input tensor.
+
+        Returns:
+        mx.array: The RMS normalized tensor.
+
+        This method calculates the square of the input tensor 'x', computes the mean along the last dimension, adds
+        a small epsilon for numerical stability, and then takes the reciprocal square root (rsqrt).
+        The original tensor 'x' is then multiplied by this result, effectively applying RMS normalization.
+        """
         return x * mx.rsqrt(x.square().mean(-1, keepdims=True) + self.eps)
 
-    def __call__(self, x):
+    def __call__(self, x: mx.array) -> mx.array:
+        """
+        Applies the RMS normalization to the input tensor.
+
+        Parameters:
+        x (mx.array): The input tensor.
+
+        Returns:
+        mx.array: The RMS normalized tensor.
+
+        This method first normalizes the input tensor 'x' and then multiplies it by the weight.
+        """
         output = self._norm(x.astype(mx.float32)).astype(x.dtype)
         return self.weight * output
 
@@ -53,7 +77,7 @@ class Attention(nn.Module):
         keys = keys.reshape(B, L, self.n_kv_heads, -1).transpose(0, 2, 1, 3)
         values = values.reshape(B, L, self.n_kv_heads, -1).transpose(0, 2, 1, 3)
 
-        def repeat(a):
+        def repeat(a: mx.array) -> mx.array:
             a = mx.concatenate([mx.expand_dims(a, 2)] * self.repeats, axis=2)
             return a.reshape([B, self.n_heads, L, -1])
 
@@ -78,14 +102,14 @@ class Attention(nn.Module):
 
 
 class FeedForward(nn.Module):
-    def __init__(self, dim, hidden_dim):
+    def __init__(self, dim: int, hidden_dim: int) -> None:
         super().__init__()
 
         self.w1 = nn.Linear(dim, hidden_dim, bias=False)
         self.w2 = nn.Linear(hidden_dim, dim, bias=False)
         self.w3 = nn.Linear(dim, hidden_dim, bias=False)
 
-    def __call__(self, x) -> mx.array:
+    def __call__(self, x: mx.array) -> mx.array:
         return self.w2(nn.silu(self.w1(x)) * self.w3(x))
 
 
@@ -149,14 +173,25 @@ class Transformer(nn.Module):
         self.output = nn.Linear(dim, vocab_size, bias=False)
 
     def __call__(
-        self,
-        inputs: mx.array,
-        cache=None,
-    ):
+        self, inputs: mx.array, cache: Optional[Tuple[mx.array, mx.array]] = None
+    ) -> Tuple[mx.array, Optional[Tuple[mx.array, mx.array]]]:
         """
-        Args:
-            inputs (mx.array): input tokens
-            cache (Optional[Tuple[mx.array, mx.array]], optional): cache for fast inference. Defaults to None.
+        Forward pass for the Transformer model.
+
+        Parameters:
+        inputs (mx.array): The input tokens for the transformer model.
+        cache (Optional[Tuple[mx.array, mx.array]]): The cache for the transformer layers. Defaults to None.
+
+        Returns:
+        Tuple[mx.array, Optional[Tuple[mx.array, mx.array]]]: The output of the transformer model and the updated cache.
+
+        The method starts by getting the token embeddings for the input tokens. If the sequence length is greater than 1,
+        it creates an additive causal mask and applies it to the embeddings. It then initializes the cache if it's not provided.
+
+        The method then passes the embeddings and the mask through each layer of the transformer, updating the cache at each step.
+
+        Finally, it applies the final normalization and linear transformation to the output of the last transformer layer and returns
+        the result along with the updated cache.
         """
         h = self.tok_embeddings(inputs)
 
@@ -166,9 +201,9 @@ class Transformer(nn.Module):
             mask = mask.astype(h.dtype)
 
         if cache is None:
-            cache = [None] * len(self.layers)
+            cache = [None] * len(self.layers)  # type: ignore
 
         for e, layer in enumerate(self.layers):
-            h, cache[e] = layer(h, mask, cache[e])
+            h, cache[e] = layer(h, mask, cache[e])  # type: ignore
 
         return self.output(self.norm(h)), cache
