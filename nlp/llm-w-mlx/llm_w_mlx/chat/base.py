@@ -63,7 +63,7 @@ class Chat:
 
     @property
     def prompt(self) -> str:
-        """Retunr LLaMA prompt based on this structure
+        """Return LLaMA prompt based on this structure
         [INST] <<SYS>>
         {{ system_prompt }}
         <</SYS>>

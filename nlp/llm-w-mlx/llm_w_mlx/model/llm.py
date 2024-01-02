@@ -65,12 +65,11 @@ class LLM:
             LLM: LLM class instance with model and tokenizer
         """
 
-        if model_name not in CONFIG.keys():
-            raise ValueError(f"Model name {model_name} not found in CONFIG. Available models are {list(CONFIG.keys())}")
-        if not os.path.exists(weights_path):
-            raise ValueError(f"Weights path {weights_path} does not exist.")
-        if not os.path.exists(tokenizer_path):
-            raise ValueError(f"Tokenizer path {tokenizer_path} does not exist.")
+        assert (
+            model_name in CONFIG.keys()
+        ), f"Model name {model_name} not found in CONFIG. Available models are {list(CONFIG.keys())}"
+        assert os.path.exists(weights_path), f"Weights path {weights_path} does not exist."
+        assert os.path.exists(tokenizer_path), f"Tokenizer path {tokenizer_path} does not exist."
 
         print(f"************ Building LLM ({model_name}) ************")
 
