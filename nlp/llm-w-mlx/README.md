@@ -1,12 +1,15 @@
-# 🚀 Language Learning Model (LLM)  with MLX🚀
-
-Welcome to LLM, a Python-based project that implements a Transformer model for natural language processing tasks. This project is designed around the creation and interaction with a language model, specifically a Transformer model. 
+# 🚀 Large Language Models with MLX 🚀
+A Python-based project that runs Large Language Models (LLM) applications on Apple Silicon in real-time thanks to [Apple MLX](https://github.com/ml-explore/mlx).
 
 ## 🌟 Features 🌟
 
 - 🤖 Implements a Transformer model for natural language processing tasks.
 - 💬 Provides a chat-like interface for interacting with the model.
 - 🎭 Supports different personalities that the model can take on during a chat. You can chat with personalities like "Cristiano Ronaldo", "Joey Tribbiani", "Dwight K. Schrute", "Michael Scott", and "Chandler Bing". Each personality is defined by a description and a set of example dialogues.
+
+## 💬 Example of a conversation with Joey Tribbiani 💬
+
+<img src="../../utils/llm-w-mlx-joey-conversation.png" width="800" height="400">
 
 ## 📥 Installation 📥
 
