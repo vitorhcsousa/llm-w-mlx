@@ -40,7 +40,7 @@ class Chat:
         Args:
             question (str): dialog question
         """
-        self.examples.append({"user": question, "model": str()})
+        self.examples.append({"user": question, "model": None})
 
     def add_answer(self, answer: str) -> None:
         """Add answer to dialog
