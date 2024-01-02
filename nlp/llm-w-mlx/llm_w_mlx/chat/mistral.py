@@ -33,7 +33,7 @@ class MistralChat(Chat):
         """
         prompt = ""
         for example in self.examples:
-            prompt += example["user"] + " " + self.INST_END
+            prompt += example["user"] + " " + self.INST_END  # type: ignore
             if example["model"] is not None:
                 prompt += " " + example["model"] + self.END + self.INST_START + " "
         return prompt

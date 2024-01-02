@@ -28,7 +28,7 @@ class OpenHermesChat(Chat):
         """
         prompt = ""
         for example in self.examples:
-            prompt += self.USER + "\n" + example["user"] + self.END + "\n" + self.ASSISTANT + "\n"
+            prompt += self.USER + "\n" + example["user"] + self.END + "\n" + self.ASSISTANT + "\n"  # type: ignore
             if example["model"] is not None:
                 prompt += example["model"] + self.END + "\n"
         return prompt
