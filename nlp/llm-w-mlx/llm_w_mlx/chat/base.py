@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 class Chat:
@@ -10,17 +10,17 @@ class Chat:
         end_str (str, optional): end of the model answer. Defaults to "</s>".
     """
 
-    def __init__(self, personality: str, examples: List[Dict[str, str]], end_str: str = "</s>"):
+    def __init__(self, personality: str, examples: List[Dict[str, Optional[str]]], end_str: str = "</s>"):
         self.personality = personality
         self.base_examples = self._load_examples(examples)
         self.examples = self.base_examples.copy()
         self.END_STR = end_str
 
-    def _load_examples(self, examples: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    def _load_examples(self, examples: List[Dict[str, Optional[str]]]) -> List[Dict[str, Optional[str]]]:
         """Load valid examples from ones provided
 
         Args:
-            examples (List[Dict[str, str]]): a list of examples of dialog [{"user": ..., "model": ...}]
+            examples (List[Dict[str, Optional[str]]]): a list of examples of dialog [{"user": ..., "model": ...}]
 
         Returns:
             List[Dict[str, str]]: a list of valid examples of dialog [{"user": ..., "model": ...}]
@@ -40,9 +40,9 @@ class Chat:
         Args:
             question (str): dialog question
         """
-        self.examples.append({"user": question, "model": None})
+        self.examples.append({"user": question, "model": str()})
 
-    def add_answer(self, answer: str):
+    def add_answer(self, answer: str) -> None:
         """Add answer to dialog
 
         Args:
@@ -72,7 +72,7 @@ class Chat:
         """
         raise NotImplementedError("prompt property must be implemented in child class")
 
-    def reset(self):
+    def reset(self) -> None:
         """Reset dialog but not personality"""
         self.examples = self.base_examples.copy()
 

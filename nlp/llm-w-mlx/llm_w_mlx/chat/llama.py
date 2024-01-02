@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from .base import Chat
 
@@ -12,7 +12,7 @@ class LLaMAChat(Chat):
         end_str (str, optional): end of the model answer. Defaults to "[/INST]".
     """
 
-    def __init__(self, personality: str, examples: List[Dict[str, str]], end_str: str = "[INST]"):
+    def __init__(self, personality: str, examples: List[Dict[str, Optional[str]]], end_str: str = "[INST]"):
         super().__init__(personality, examples, end_str)
         self.SYS_START = "<<SYS>>"
         self.SYS_END = "<</SYS>>"

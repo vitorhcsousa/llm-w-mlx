@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from .base import Chat
 
@@ -11,7 +11,7 @@ class OpenHermesChat(Chat):
         examples (List[Dict[str, str]]): a list of examples of dialog [{"question": ..., "answer": ...}]
     """
 
-    def __init__(self, personality: str, examples: List[Dict[str, str]], end_str: str = "<|im_end|>"):
+    def __init__(self, personality: str, examples: List[Dict[str, Optional[str]]], end_str: str = "<|im_end|>"):
         super().__init__(personality, examples, end_str)
 
         self.SYSTEM = "<|im_start|>system"

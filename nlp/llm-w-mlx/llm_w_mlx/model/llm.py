@@ -25,18 +25,18 @@ class LLM:
         model (Transformer): a Transformer model
         tokenizer: SentencePieceProcessor tokenizer
         personality (str, optional): model personality (a description of what personality model has). Defaults to "".
-        examples (List[Dict[str, str]], optional): a list of examples of dialog [{"user": ..., "model": ...}]. Defaults to [].
+        examples (List[Dict[str, Optional[str]]], optional): a list of examples of dialog [{"user": ..., "model": ...}]. Defaults to [].
         model_name (str, optional): model name. Defaults to "".
     """
 
     def __init__(
         self,
         model: Transformer,
-        tokenizer,
-        examples: List[Dict[str, str]],
+        tokenizer: SentencePieceProcessor,
+        examples: List[Dict[str, Optional[str]]],
         personality: str = "",
         model_name: str = "",
-    ):
+    ) -> None:
         self.model = model
         self.tokenizer = tokenizer
         self.personality = personality
@@ -48,10 +48,10 @@ class LLM:
         model_name: str,
         weights_path: Union[str, Path],
         tokenizer_path: Union[str, Path],
-        examples: List[Dict[str, str]],
+        examples: List[Dict[str, Optional[str]]],
         personality: str = "",
         no_rope: bool = True,
-    ):
+    ) -> "LLM":
         """Build an LLM model from a given model name, weights path and tokenizer path.
 
         Args:
@@ -59,7 +59,8 @@ class LLM:
             weights_path (Union[str, Path]): path to mlx weights
             tokenizer_path (Union[str, Path]): path to tokenizer
             personality (str, optional): Mistral personality for chat mode. Defaults to "".
-            examples (List[Dict[str, str]], optional): Mistral examples (list of {"user": ..., "model": ...} examples) for chat mode. Defaults to [].
+            examples (List[Dict[str, Optional[str]]], optional): Mistral examples (list of {"user": ..., "model": ...} examples) for chat mode. Defaults to [].
+            no_rope (bool, optional): whether to use RoPE. Defaults to True.
 
         Returns:
             LLM: LLM class instance with model and tokenizer
@@ -75,7 +76,7 @@ class LLM:
         print(f"************ Building LLM ({model_name}) ************")
 
         with Timing("> Loading weights"):
-            model = Transformer(**CONFIG[model_name])
+            model = Transformer(**CONFIG[model_name])  # type: ignore
             weights = mx.load(weights_path)
             weights = tree_unflatten(list(weights.items()))
             weights = tree_map(lambda p: p.astype(mx.float16), weights)
@@ -86,9 +87,9 @@ class LLM:
 
         print("\n" + "-" * 20 + "\n")
 
-        return LLM(model, tokenizer, personality, examples, model_name=model_name)
+        return LLM(model, tokenizer, examples, personality, model_name=model_name)
 
-    def generate(self, x: mx.array, temp: Optional[float] = 0.0):
+    def generate(self, x: mx.array, temp: Optional[float] = 0.0) -> mx.array:
         """Generate tokens from a given input
 
         Args:
@@ -96,7 +97,7 @@ class LLM:
             temp (Optional[float], optional): model temperature. Defaults to 0.0.
         """
 
-        def sample(logits):
+        def sample(logits):  # type: ignore
             if temp == 0:
                 return mx.argmax(logits, axis=-1)
             else:
@@ -111,7 +112,7 @@ class LLM:
             y = sample(logits.squeeze(1))
             yield y
 
-    def chat(self, temp: float = 0.1, max_tokens: int = 1000):
+    def chat(self, temp: float = 0.1, max_tokens: int = 1000) -> None:
         """Chat with model
 
         Args:
@@ -119,7 +120,7 @@ class LLM:
             max_tokens (int, optional): max number of tokens to generate. Defaults to 1000.
         """
 
-        chat = create_chat(self.model_name, self.personality, self.examples)
+        chat = create_chat(self.model_name, self.examples, self.personality)
 
         print("************ LLM Chat ('q' to quit, 'r' to reset) ************\n")
 

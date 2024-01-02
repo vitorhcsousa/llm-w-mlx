@@ -14,7 +14,7 @@ repos:
     hooks:
       - id: system
         name: format
-        entry: make format
+        entry: make -C nlp/llm-w-mlx format
         pass_filenames: false
         language: system
   - repo: local

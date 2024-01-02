@@ -21,9 +21,9 @@ def smart_load(ckpt_paths: List[Union[str, Path]]) -> Generator:
     """
     for ckpt_path in ckpt_paths:
         with Timing(f"> Loading checkpoint from {ckpt_path}.."):
-            if ckpt_path.endswith(".safetensors"):
+            if ckpt_path.endswith(".safetensors"):  # type: ignore
                 state_dict = {}
-                with safe_open(ckpt_path, framework="pt", device="cpu") as state:
+                with safe_open(ckpt_path, framework="pt", device="cpu") as state:  # type: ignore
                     state_dict = {k: state.get_tensor(k) for k in state.keys()}
             else:
                 state_dict = torch.load(ckpt_path, map_location="cpu")
@@ -34,7 +34,7 @@ def weights_to_npz(
     ckpt_paths: List[Union[str, Path]],
     output_path: Union[str, Path],
     show_kv: bool = False,
-):
+) -> None:
     """Convert a checkpoint of PyTorch or safetensors to a MLX checkpoint (npz file).
 
     Args:
@@ -46,8 +46,8 @@ def weights_to_npz(
     for ckpt_path in ckpt_paths:
         print(f"> Loading {ckpt_path}..")
         # safetensors
-        if ckpt_path.endswith(".safetensors"):
-            with safe_open(ckpt_path, framework="pt", device="cpu") as state:
+        if ckpt_path.endswith(".safetensors"):  # type: ignore
+            with safe_open(ckpt_path, framework="pt", device="cpu") as state:  # type: ignore
                 for k in tqdm(state.keys(), total=len(state.keys()), desc="Converting.."):
                     v = state.get_tensor(k)
                     if show_kv:
@@ -74,7 +74,7 @@ def hf_to_npz(
     output_path: Union[str, Path],
     n_heads: int,
     n_kv_heads: int,
-):
+) -> None:
     """Convert a checkpoint of HuggingFace to a MLX checkpoint (npz file).
 
     Args:
@@ -108,7 +108,7 @@ def hf_to_npz(
         "lm_head.weight": "output.weight",
     }
 
-    def permute(w, n_heads):
+    def permute(w: torch.Tensor, n_heads: int) -> torch.Tensor:
         return w.reshape(n_heads, 2, w.shape[0] // n_heads // 2, w.shape[1]).transpose(1, 2).reshape(*w.shape[:2])
 
     converted_state_dict = {}
