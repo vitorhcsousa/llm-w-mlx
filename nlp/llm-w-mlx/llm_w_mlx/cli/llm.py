@@ -5,7 +5,7 @@ from personalities import personalities
 from llm_w_mlx.model import LLM
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args():
     # Create the parser
     parser = argparse.ArgumentParser(description="LLM chat arguments")
 
