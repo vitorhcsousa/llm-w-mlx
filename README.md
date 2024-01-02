@@ -40,8 +40,7 @@ Hey there! I'm Vitor Sousa, a passionate data scientist with a knack for turning
 
 I'm constantly exploring new ways to leverage data for impactful insights. If you're interested in collaboration, have a project idea, or just want to chat about data science, feel free to reach out!
 
-[![Personal Web Site](https://img.shields.io/badge/Website-FF7139?style=for-the-badge&logo=firefox&logoColor=white&labelColor=101010)](https://vitorhcsousa.github.io/)
-
+[![Personal Web Site](https://img.shields.io/badge/Website-FF7139?style=for-the-badge&logo=V&logoColor=white&labelColor=101010)](https://vitorhcsousa.github.io/)
 ## 📬 Let's Connect!
 
 [![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white&labelColor=101010)](https://twitter.com/vitorhcsousa)
