@@ -1,4 +1,4 @@
-# 🚀 Awesome Data Science Portfolio 📊
+# 🚀 Portfolio 📊
 
 Welcome to my Data Science Playground! 🤖✨
 
