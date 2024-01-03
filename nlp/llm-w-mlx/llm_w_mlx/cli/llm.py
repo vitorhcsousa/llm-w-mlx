@@ -1,46 +1,28 @@
-import argparse
-
+import typer
 from personalities import personalities
-
 from llm_w_mlx.model import LLM
 
+app = typer.Typer()
 
-def parse_args() -> argparse.Namespace:
-    # Create the parser
-    parser = argparse.ArgumentParser(description="LLM chat arguments")
-
-    parser.add_argument(
-        "--personality",
-        default="dwight",
-        type=str,
-        choices=list(personalities.keys()),
-    )
-
-    parser.add_argument("--model", default="Mistral-7B-Instruct-v0.1", required=False, type=str, help="Model name.")
-
-    parser.add_argument("--weights", required=True, type=str, help="Model weights path (npz file).")
-
-    parser.add_argument("--tokenizer", required=True, type=str, help="Model tokenizer path (model file).")
-
-    parser.add_argument("--max_tokens", default=500, type=int, help="Max tokens for the chat.")
-
-    # Parse the arguments
-    args = parser.parse_args()
-
-    return args
-
-
-if __name__ == "__main__":
-    args = parse_args()
-
-    print(f"> LLM with personality: {args.personality.upper()}")
+@app.command()
+def start_chat(
+    personality: str = typer.Option("dwight", help="Personality for the chat."),
+    model: str = typer.Option("Mistral-7B-Instruct-v0.1", help="Model name."),
+    weights: str = typer.Option(..., help="Model weights path (npz file)."),
+    tokenizer: str = typer.Option(..., help="Model tokenizer path (model file)."),
+    max_tokens: int = typer.Option(500, help="Max tokens for the chat.")
+):
+    print(f"> LLM with personality: {personality.upper()}")
 
     llm = LLM.build(
-        model_name=args.model,
-        weights_path=args.weights,
-        tokenizer_path=args.tokenizer,
-        personality=personalities[args.personality]["personality"],
-        examples=personalities[args.personality]["examples"],
+        model_name=model,
+        weights_path=weights,
+        tokenizer_path=tokenizer,
+        personality=personalities[personality]["personality"],
+        examples=personalities[personality]["examples"],
     )
 
-    llm.chat(max_tokens=args.max_tokens)
+    llm.chat(max_tokens=max_tokens)
+
+if __name__ == "__main__":
+    app()
