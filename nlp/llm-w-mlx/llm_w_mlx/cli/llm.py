@@ -18,9 +18,9 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument("--model", default="Mistral-7B-Instruct-v0.1", required=False, type=str, help="Model name.")
 
-    parser.add_argument("--weights", required=True, type=str, help="Mistral weights path (npz file).")
+    parser.add_argument("--weights", required=True, type=str, help="Model weights path (npz file).")
 
-    parser.add_argument("--tokenizer", required=True, type=str, help="Mistral tokenizer path (model file).")
+    parser.add_argument("--tokenizer", required=True, type=str, help="Model tokenizer path (model file).")
 
     parser.add_argument("--max_tokens", default=500, type=int, help="Max tokens for the chat.")
 
