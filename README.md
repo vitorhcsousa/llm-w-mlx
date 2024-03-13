@@ -17,7 +17,7 @@ Hey there! I'm Vitor Sousa, a passionate data scientist with a knack for turning
 
 
 --- 
-## 🛠️ Technologies I Love
+## 🛠️ Technologies I Use
 
 - Python 🐍
 - Pandas & NumPy 📊
