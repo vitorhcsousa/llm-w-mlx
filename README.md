@@ -9,7 +9,7 @@ A Python-based project that runs Large Language Models (LLM) applications on App
 
 ## 💬 Example of a conversation with Joey Tribbiani 💬
 
-<img src="/utils/llm_w_mlx-joey-conversation.png" width="800" height="400">
+<img src="/utils/llm-w-mlx-joey-conversation.png" width="800" height="400">
 
 ## 📥 Installation 📥
 
