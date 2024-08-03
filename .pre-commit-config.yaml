@@ -14,14 +14,14 @@ repos:
     hooks:
       - id: system
         name: format
-        entry: make -C nlp/llm-w-mlx format
+        entry: make format
         pass_filenames: false
         language: system
   - repo: local
     hooks:
       - id: system
         name: check
-        entry: make -C nlp/llm-w-mlx check
+        entry: make check
         pass_filenames: false
         language: system
         stages: [push]

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "llm-w-mlx"
+name = "llm_w_mlx"
 version = "0.1.0"
 description = ""
 authors = ["vitorhcsousa <vitor.costasousa@farfetch.com>"]

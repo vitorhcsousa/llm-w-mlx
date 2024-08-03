@@ -1,8 +1,10 @@
 import typer
 from personalities import personalities
+
 from llm_w_mlx.model import LLM
 
 app = typer.Typer()
+
 
 @app.command()
 def start_chat(
@@ -10,8 +12,8 @@ def start_chat(
     model: str = typer.Option("Mistral-7B-Instruct-v0.1", help="Model name."),
     weights: str = typer.Option(..., help="Model weights path (npz file)."),
     tokenizer: str = typer.Option(..., help="Model tokenizer path (model file)."),
-    max_tokens: int = typer.Option(500, help="Max tokens for the chat.")
-):
+    max_tokens: int = typer.Option(500, help="Max tokens for the chat."),
+) -> None:
     print(f"> LLM with personality: {personality.upper()}")
 
     llm = LLM.build(
@@ -23,6 +25,7 @@ def start_chat(
     )
 
     llm.chat(max_tokens=max_tokens)
+
 
 if __name__ == "__main__":
     app()
